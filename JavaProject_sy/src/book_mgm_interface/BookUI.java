@@ -114,7 +114,7 @@ public class BookUI extends WindowAdapter implements ActionListener{
 		}else if(menu.equals("수정검색") || obj == tf_update) {
 			String isbn = tf_update.getText().trim();
 			idx = bms.searchAddress(isbn);
-			if(idx != -1) {
+			if(idx != 0) {
 				//JOptionPane.showMessageDialog(null,"수정가능");
 				updateOkForm();  //수정 폼 : 도서명, 저자명, 가격을 새로 입력 폼
 			}else {
@@ -133,13 +133,13 @@ public class BookUI extends WindowAdapter implements ActionListener{
 			book.setAuthor(dataList.get(2));
 			book.setPrice(Integer.parseInt(dataList.get(3)));
 			
-			System.out.println(book.getIsbn());
-			System.out.println(book.getTitle());
-			System.out.println(book.getAuthor());
-			System.out.println(book.getPrice());
+//			System.out.println(book.getIsbn());
+//			System.out.println(book.getTitle());
+//			System.out.println(book.getAuthor());
+//			System.out.println(book.getPrice());
 			
 			//2. bms에 수정데이터 전송
-			if(bms.update(idx, book)) {				
+			if(bms.update(book)) {				
 				JOptionPane.showMessageDialog(null, idx+"수정완료");
 			}else {
 				JOptionPane.showMessageDialog(null, "수정실패");
@@ -151,12 +151,12 @@ public class BookUI extends WindowAdapter implements ActionListener{
 			String isbn = tf_delete.getText().trim();
 			idx = bms.searchAddress(isbn);
 			
-			if(idx != -1) {
+			if(idx != 0) {
 				//삭제 데이터 존재 시 사용자에게 삭제의사를 물어봄
 				int choice = JOptionPane.showConfirmDialog(null, "정말로 삭제 하시겠습니까?");
 				if(choice == 0) {
 					//삭제 진행 ---> 데이터가 존재하는 곳에서 진행  bms
-					if(bms.delete(idx)) {
+					if(bms.delete(isbn)) {
 						JOptionPane.showMessageDialog(null, "삭제완료~");
 					}else {
 						JOptionPane.showMessageDialog(null, "삭제실패~");

@@ -119,15 +119,19 @@ public class BookMgmSystem implements DataStandardManager{ //implements ¾²¸é ¹Ýµ
 //		BookVO book =(BookVO) input("insert"); 		//(BookVO)Ä³½ºÆÃ ÇÏ±âÀü¿¡´Â object-> È°¼º, BookVO ->ºñÈ°¼º
 		boolean result = false;
 		
-		if(book !=null ) {
-				result = bookList.add(book);
-//				if(result) {
-//					System.out.println("------>" + bookList.size());
-//					System.out.println("== µî·ÏÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù. ==");
-//				}else {
-//					System.out.println("== µî·ÏÀÌ ½ÇÆÐÇÏ¿´½À´Ï´Ù. ==");
-//					}
-				}
+		//DB ¿¬µ¿ ÈÄ insert 
+		BookDAO dao = new BookDAO();
+		result = dao.insert(book);  	//dao¿¡ ³Ñ°ÜÁÜ
+		
+//		if(book !=null ) {
+//				result = bookList.add(book);
+////				if(result) {
+////					System.out.println("------>" + bookList.size());
+////					System.out.println("== µî·ÏÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù. ==");
+////				}else {
+////					System.out.println("== µî·ÏÀÌ ½ÇÆÐÇÏ¿´½À´Ï´Ù. ==");
+////					}
+//				}
 		return result;
 	}
 	
@@ -161,44 +165,62 @@ public class BookMgmSystem implements DataStandardManager{ //implements ¾²¸é ¹Ýµ
 	 * µµ¼­ Á¤º¸ Ãâ·Â
 	 */
 	public List<BookVO> selectList() {
-		for(BookVO book : bookList) {
-			System.out.println(book.getIsbn());
-			System.out.println(book.getTitle());
-			System.out.println(book.getAuthor());
-			System.out.println(book.getPrice());
-		}
+		List<BookVO> bookList = new ArrayList<BookVO>();
+		
+		BookDAO dao = new BookDAO();
+		bookList = dao.select();
+		
 		return bookList;
+		
+//		for(BookVO book : bookList) {
+//			System.out.println(book.getIsbn());
+//			System.out.println(book.getTitle());
+//			System.out.println(book.getAuthor());
+//			System.out.println(book.getPrice());
+//		}
 	}
 	
 	/*
 	 * ÀÎµ¦½º °Ë»ö
 	 */
 	public int searchAddress(String isbn) {
-		int idx = -1;
+		int idx = 0;
 		
-		for(BookVO book : bookList) {
-			if(book != null) {
-				if(book.getIsbn().equals(isbn)) {
-					idx = bookList.indexOf(book);
-				}
-			}
-		}
+		//db¿¬µ¿ ÈÄ °Ë»ö
+		BookDAO dao = new BookDAO();
+		idx = dao.select(isbn);
 		
 		return idx;
+//		for(BookVO book : bookList) {
+//			if(book != null) {
+//				if(book.getIsbn().equals(isbn)) {
+//					idx = bookList.indexOf(book);
+//				}
+//			}
+//		}
+		
 	}
 	
 	/*
 	 * µµ¼­ Á¤º¸ ¼öÁ¤
 	 */
-	public boolean update(int idx, BookVO book) {
+	public boolean update(BookVO book) {
 		boolean result = false;
 		
-		if(book != null) {
-			bookList.set(idx, book);
-//			System.out.println("== ¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù. ==");
-			result = true;
-		}
+		BookDAO dao = new BookDAO();
+		result = dao.update(book);
+		
 		return result;
+	}
+//	public boolean update(int idx, BookVO book) {
+//		boolean result = false;
+//		
+//		if(book != null) {
+//			bookList.set(idx, book);
+//			System.out.println("== ¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù. ==");
+//			result = true;
+//		}
+//		return result;
 //		System.out.print("¼öÁ¤ÇÒ ISBN> ");
 //		String isbn = scan.next();
 //		int update_idx = searchAddress(isbn);
@@ -213,7 +235,7 @@ public class BookMgmSystem implements DataStandardManager{ //implements ¾²¸é ¹Ýµ
 //			System.out.println("== ÇØ´ç µ¥ÀÌÅÍ°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
 //		}
 //		choiceMenu();
-	}
+//	}
 	
 	@Override
 	public void update() {
@@ -251,16 +273,24 @@ public class BookMgmSystem implements DataStandardManager{ //implements ¾²¸é ¹Ýµ
 	}
 	
 	/** µµ¼­ Á¤º¸ »èÁ¦ **/
-	public boolean delete(int idx) {
+	public boolean delete(String isbn) {
 		boolean result = false;
 		
-		if(idx != -1) {
-			bookList.remove(idx);
-			result = true;
-		}
-		return result;
+		BookDAO dao = new BookDAO();
+		result = dao.delete(isbn);
 		
+		return result;
 	}
+//	public boolean delete(int idx) {
+//		boolean result = false;
+//		
+//		if(idx != -1) {
+//			bookList.remove(idx);
+//			result = true;
+//		}
+//		return result;
+//		
+//	}
 	
 		
 }
