@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class DBConn {
+public class DBConn {	//DB연동 공통모듈 생성
 	//Field
 	private String url = "jdbc:oracle:thin:@127.0.0.1:1521";
 	private String user = "scott";
